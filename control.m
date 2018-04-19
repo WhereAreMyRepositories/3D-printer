@@ -1,5 +1,5 @@
 %fprintf(s,'x200 y200 z200\n');
-t = 0:0.1:2*pi;
+t = 0:0.05:2*pi;
 
 
 traj1 = round(200*sin(t));
@@ -13,5 +13,12 @@ kroki3 = traj3(2:end) - traj3(1:end-1);
 
 for  i=1:size(kroki1,2) 
     fprintf(s,'x%d y%d z%d\n',[kroki1(i) kroki2(i) kroki3(i)]);
-    pause(0.1)
+    
+    while(s.BytesAvailable == 0) % czekanie na wartosci rozne od zera(dane)
+    end
+    
+    while(s.BytesAvailable > 0) % wczytanie ok z drukarki
+        fscanf(s);
+    end
+    [kroki1(i) kroki2(i) kroki3(i)]
 end

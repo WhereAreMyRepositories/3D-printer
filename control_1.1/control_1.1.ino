@@ -1,4 +1,4 @@
-#define X_MIN_PIN           3
+#define X_MIN_PIN           3 // obsluga krancowki od psa
 #ifndef X_MAX_PIN
 #define X_MAX_PIN         2
 #endif
@@ -30,6 +30,7 @@ int krokx = 0;
 int kroky = 0;
 int krokz = 0;
 int tmp;
+bool wyslane = true;
 String s;
 void setup() {
   // put your setup code here, to run once:
@@ -55,6 +56,8 @@ void setup() {
   pinMode(Z_DIR_PIN, OUTPUT);
   digitalWrite(Z_DIR_PIN, LOW);
   pinMode(Z_STEP_PIN, OUTPUT);
+
+  pinMode(X_MIN_PIN, INPUT);
 }
 
 void loop() {
@@ -69,6 +72,7 @@ void loop() {
   {
     s = Serial.readStringUntil('\n');
     sscanf(s.c_str(), "x%d y%d z%d", &krokx, &kroky, &krokz);
+    wyslane = false;
 
     if (krokx < 0)
     {
@@ -97,6 +101,8 @@ void loop() {
       digitalWrite(Z_DIR_PIN, LOW);
     }
 
+    
+
   }
 
 
@@ -120,4 +126,22 @@ void loop() {
   digitalWrite(Y_STEP_PIN, LOW);
   digitalWrite(Z_STEP_PIN, LOW);
   delayMicroseconds(300);
+  
+  if(krokx == 0 && kroky == 0 && krokz ==0 && wyslane == false)
+  {
+    Serial.println("OK");
+    wyslane = true;
+  }
+  if(digitalRead(X_MIN_PIN)== 0)   // krancowka w stanie aktywnym jest 0 , podniesiona domyslenie 1
+  {
+    digitalWrite(X_ENABLE_PIN,HIGH);
+    digitalWrite(Y_ENABLE_PIN,HIGH);  // HIGH - wylaczona silniki
+    digitalWrite(Z_ENABLE_PIN,HIGH);
+   }
+   else
+   {
+    digitalWrite(X_ENABLE_PIN,LOW);
+    digitalWrite(Y_ENABLE_PIN,LOW); // LOW - zalacza dzialanie silnikow 
+    digitalWrite(Z_ENABLE_PIN,LOW);
+   }
 }
