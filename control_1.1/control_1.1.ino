@@ -101,10 +101,7 @@ void loop() {
       digitalWrite(Z_DIR_PIN, LOW);
     }
 
-    
-
   }
-
 
   if (x == 0 && krokx > 0)
   {

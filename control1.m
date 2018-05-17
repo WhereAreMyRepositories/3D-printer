@@ -22,3 +22,4 @@ for  i=1:size(kroki1,2)
     end
     [kroki1(i) kroki2(i) kroki3(i)]
 end
+
